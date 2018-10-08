@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeWorkATM3009
 {
+    //this program is not optimized
 
     class Program
     {
