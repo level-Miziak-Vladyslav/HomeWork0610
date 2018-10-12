@@ -27,6 +27,7 @@ namespace HomeWorkATM3009
                     Console.WriteLine("3 for even odd");
                     Console.WriteLine("4 for quad");
                     Console.WriteLine("5 for ATM"); //automated teller machine
+                    Console.WriteLine("6 for Phonebook"); //automated teller machine
                     Console.WriteLine("or 0 for exit");
                     Console.WriteLine();
 
@@ -101,6 +102,15 @@ namespace HomeWorkATM3009
                         ATM A = new ATM();
                         A.MainRun();
                     }
+                    if (keypress == 6)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Phonebook");
+                        Console.WriteLine();
+                        Phonebook P = new Phonebook();
+                        P.MainRun();
+                    }
+
 
 
                     //                    throw new Exception("new try");
@@ -361,7 +371,7 @@ namespace HomeWorkATM3009
 
     }
     #endregion
-    #region ATM main
+#region ATM
     public class ATM
     {
         int keypress;
@@ -487,8 +497,8 @@ namespace HomeWorkATM3009
                 Console.WriteLine();
             }
         }
-        #endregion
-        #region WorkAdmin
+#endregion
+#region WorkAdmin
         void WorkAdmin()
         {
             int keypress;
@@ -612,8 +622,8 @@ namespace HomeWorkATM3009
                 Console.WriteLine("Ошибка поймана" + exc);
             }
         }
-        #endregion
-        #region WorkUser
+#endregion
+#region WorkUser
         void WorkUser()
         {
             int keypress;
@@ -679,5 +689,109 @@ namespace HomeWorkATM3009
         }
         #endregion
     }
+#region Phonebook
+    class Phonebook
+    {
+        public static string[,] matrix = new string[100, 2];
+        public static int LastIndexOf = 0;
+        public void MainRun()
+        {
+            int keypress;
+            try
+            {
+                do
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Enter task number");
+                    Console.WriteLine("1 to add new phone number");
+                    Console.WriteLine("2 to print list");
+                    Console.WriteLine("3 to remove existing name or user by string equal");
+                    Console.WriteLine("4 for quit");
+                    Console.WriteLine();
+
+                    keypress = int.Parse(Console.ReadLine()); // read keystrokes
+
+                    //                    Console.WriteLine(" Your key is: " + keypress);
+                    if (keypress == 1)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Enter full name");
+                        string a = Console.ReadLine();
+                        Console.WriteLine("Enter phone number");
+                        string b = Console.ReadLine();
+                        matrix = AddNewNumber(a, b, matrix);
+                        Console.WriteLine("User {0} was added", a);
+                        Console.WriteLine("Do you want to add user?");
+                        Console.WriteLine("1 for Yes 0 for No");
+                    }
+                    if (keypress == 2)
+                    {
+                        DrawMatrix(matrix);
+                    }
+                    if (keypress == 3)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Enter phone number or full name to remove");
+                        string b = Console.ReadLine();
+                        matrix = DelNumber(b, matrix);
+                        Console.WriteLine("Do you want to remove user?");
+                        Console.WriteLine("1 for Yes 0 for No");
+                    }
+
+                } while (keypress != 4);
+                Console.WriteLine("Phonebook is closed");
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Ошибка поймана" + exc);
+                Console.WriteLine();
+            }
+        }
+        public static string[,] AddNewNumber(string a, string b, string[,] m)
+        {
+            m[LastIndexOf, 0] = a;
+            m[LastIndexOf, 1] = b;
+            LastIndexOf++;
+            return m;
+        }
+        public static void DrawMatrix(string[,] matrix)
+        {
+            for (int i = 0; i < LastIndexOf; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    Console.Write($"{(matrix[i, j].ToString().Length < 2 ? matrix[i, j].ToString() + "  |" : matrix[i, j].ToString() + " |")}");
+                }
+                Console.WriteLine();
+            }
+        }
+        public static string[,] DelNumber(string b, string[,] m)
+        {
+            for (int i = 0; i < LastIndexOf; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    if (m[i, j] == b)
+                    {
+                        Console.WriteLine("User founded");
+                        for (int z = i; z < LastIndexOf; z++)
+                        {
+                            m[z, 0] = m[z + 1, 0];
+                            m[z, 1] = m[z + 1, 1];
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("User not found");
+                    }
+                }
+                Console.WriteLine();
+            }
+            LastIndexOf--;
+            return m;
+        }
+    }
+#endregion
 }
 
